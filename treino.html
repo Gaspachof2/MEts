@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr" onload="javascript:init()">
+  <head>
+	<style>
+	.btnAdd{
+		width:6vw;
+		height:8vw;
+		background-color: #7289da;
+		border: 1px solid #7289da;
+		font-size: 2vw;
+		font-align:center;
+
+
+	}
+	.home-menu{
+		background-color:#23272a;
+	}
+	.boxAtletas{
+	margin-top:70px;
+
+	}
+	.atleta{
+	border-radius:10px;
+	 justify-content: space-between;
+	flex-direction: column;
+	height: 45vh;
+	display: flex;
+	margin-left:3vw;
+	margin-bottom:5vw;
+	margin-top:3vw;
+
+	background-color:#e6e6e6;
+	}
+	.btnAtleta{
+
+		background-color: #7289da;
+		border: 0px solid blue;
+		width:20vw;
+		height:10vw;
+		font-size:2vw;
+		margin-top: 42VW;
+
+}
+  .nome{
+    font-size: vw;
+  }
+  .btnSave{
+     width:18vw;
+	height:8vw;
+    background-color: #7289da;
+    border: 1px solid #7289da;
+    font-size: 2vw;
+    font-align:center;
+  }
+
+
+	</style>
+
+  <script>
+   var listaDeAtletas=[];
+   var arquivo;
+  function addDiv(){
+    var texto;
+	texto = prompt("Insira o nome");
+    if (texto=== null || texto===""){
+    alert("Insira um nome valido");
+    return;
+    }
+    var oneDiv = document.createElement("div");
+    var nome = document.createElement("h1");
+	var formm = document.createElement("form");
+	var inputt = document.createElement("input")
+
+    var t = document.createTextNode(texto);
+
+	formm.action="/monitoramento.html";
+	inputt.className="btnAtleta";
+	inputt.type="submit";
+	inputt.value="Treinar";
+    oneDiv.className= "atleta pure-u-11-24";
+
+
+    nome.appendChild(t);
+    document.getElementById("bxat").appendChild(oneDiv);
+    oneDiv.appendChild(nome);
+    oneDiv.appendChild(formm);
+	formm.appendChild(inputt);
+
+
+  }
+  function save(){
+    var corpo= document.getElementById("bxat");
+    var filhos = corpo.getElementsByTagName("h1");
+    for(i=0;i<filhos.length;i++){
+      var tempFilho = filhos[i].textContent;
+
+
+      console.log(tempFilho);
+  listaDeAtletas.push(tempFilho);
+
+    }
+    generateJson();
+      }
+    function generateJson(){
+
+      var obj = "{ "
+      for(i=0;i<listaDeAtletas.length;i++){
+        if(i!=listaDeAtletas.length -1){
+        obj+='"nome" ' + ':' + '"'+ (listaDeAtletas[i])+'"' +' ,'
+      }
+      else{
+      obj+='"nome " ' +':'+ '"'+ (listaDeAtletas[i])+'"' +' }'
+      }
+      }
+        console.log(obj);
+        arquivo = obj;
+        download("Perfil.JSON");
+    }
+
+    function download(filename) {
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:file/JSON;charset=utf-8,' + encodeURIComponent(arquivo));
+      element.setAttribute('download', filename);
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    }
+
+    // Start file download.
+    download("hello.JSON","This is the content of my file :)");
+
+
+
+   </script>
+
+    <meta charset="utf-8">
+    <title>Sistema de gerenciamento ME.T.S</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="pure-min.css">
+
+  </head>
+  <body bgcolor="#2c2f33">
+     <div class="pure-g">
+	  <div class="pure-u-1">
+
+
+		  <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+			   <button onclick="addDiv()" class="btnAdd"> + </button>
+          <button  onclick="save()" class="btnSave"> Salvar perfil</button>
+		  </div>
+
+
+
+
+
+		<div  id="bxat" align="center" class="boxAtletas pure-g">
+		<!--	<h1 align="center" >Ainda não há atletas cadastrados, cadastre agora clicando no botão "+"</h1> \\-->
+<!--			<div class="atleta pure-u-2-5" >
+				<h1 class="nome">Vaneza</h1>
+
+          <form  action="/monitoramento.html">
+              <input   class="btnAtleta" type="submit" value="Treinar" />
+            </form>
+
+
+
+				</div>
+        <div class="atleta pure-u-3-5" >
+         <h1 class="nome">BotChines</h1>
+         </div>
+
+\\-->
+
+		</div>
+
+    </div>
+	 </div>
+  </body>
+</html>

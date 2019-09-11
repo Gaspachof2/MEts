@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr" >
+  <head>
+    <style media="screen">
+
+
+    </style>
+<script src="Chart.min.js"></script>
+    <script>
+    var webSocket,dataPlot,pulos;
+    var texto= document.getElementById("Altura");
+    var t;
+
+	pulos=0;
+    function addData(label,data){
+      dataPlot.data.labels.push(label);
+      dataPlot.data.datasets[0].data.push(data);
+      dataPlot.update();
+    }
+    function init(){
+      webSocket = new WebSocket('ws://'+ window.location.hostname + ':81/');
+      webSocket.onmessage = function(event){
+        var data = JSON.parse(event.data);
+        var today = new Date();
+       // var t = today.getHours() +":"+ today.getMinutes() + ":" + today.getSeconds();
+		pulos+=1;
+	 var t = (pulos);
+    addData(t,data.value);
+		addData(t,"");
+    var t = document.createTextNode(data.value);
+    texto.appendChild(t);
+      }
+
+      dataPlot = new Chart(document.getElementById("grafico"),{
+      type: 'line',
+      data:{
+        labels:[],
+        datasets:[{
+          data: [],
+          label: "Pulos em tempo real",
+          borderColor: "#ff0000",
+          fill:false
+        }]
+      },
+      options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                        return  value+' cm';
+                    }
+                }
+            }],
+          xAxes:[{
+              ticks: {
+                  // Include a dollar sign in the ticks
+                  callback: function(value, index, values) {
+                      return  value+' cm';
+                  }
+              }
+          }]
+        }
+    }
+
+    });
+  }
+    </script>
+
+    <meta charset="utf-8">
+    <title>Sistema de gerenciamento ME.T.S</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="pure-min.css">
+
+  </head>
+  <body onload="javascript:init()">
+    <canvas id="grafico" width="800" height="450"></canvas>
+    <div class="pure-g">
+      <div class="pure-u-12-24">
+        <h1 align="center" id="Altura"></h1>
+      </div>
+    </div>
+  </body>
+
+</html>
