@@ -9,7 +9,7 @@
     <script>
     var webSocket,dataPlot,pulos;
     var texto= document.getElementById("Altura");
-    var t;
+    var te;
 
 	pulos=0;
     function addData(label,data){
@@ -25,9 +25,9 @@
        // var t = today.getHours() +":"+ today.getMinutes() + ":" + today.getSeconds();
 		pulos+=1;
 	 var t = (pulos);
-    addData(t,data.value);
-		addData(t,"");
-    var t = document.createTextNode(data.value);
+    addData(t+"º",data.value);
+		addData("","0");
+    te = document.createTextNode("data.value");
     texto.appendChild(t);
       }
 
@@ -52,14 +52,7 @@
                     }
                 }
             }],
-          xAxes:[{
-              ticks: {
-                  // Include a dollar sign in the ticks
-                  callback: function(value, index, values) {
-                      return  value+' cm';
-                  }
-              }
-          }]
+
         }
     }
 
